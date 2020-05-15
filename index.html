@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>ImageInpainting</title>
+    <meta http-equiv="Content-type" content="text/html;charset=UTF-8" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/tapmodo/Jcrop@0.9.12/js/jquery.Jcrop.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/gh/tapmodo/Jcrop@0.9.12/css/jquery.Jcrop.min.css" rel="stylesheet" />
+    <!-- Compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+
+    <!-- Compiled and minified JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <link rel="stylesheet" href="main.css">
+    <script src="main.js"></script>
+
+</head>
+
+<body>
+
+    <div class="container">
+        <div class="row">
+            <div class="span12">
+                <div class="jc-demo-box">
+                    <div class="page-header">
+                        <h1>Image Inpaintig</h1>
+                    </div>
+                    <input id="file-input" type="file" accept=".jpg, .jpeg" />
+                    <button onclick="loadImage()" id="btn-load-image">Load Image</button>
+                    <div style="display: none;" id="modification-area">
+                        <div class="row">
+                            <div class="column">
+                                <canvas style="background-color: white;" id="image" height="400" width="400"></canvas>
+                                <p class="image-caption">Input Image</p>
+                            </div>
+                            <div class="column">
+                                <img id="output-img" />
+                                <p class="image-caption">Output Image</p>
+                            </div>
+                        </div>
+                        <button onclick="drawRectangle()">Remove Content</button>
+                        <button onclick="postImage()">Fill Rectangle</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html>

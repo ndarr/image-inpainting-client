@@ -1,0 +1,33 @@
+#image {
+    width: 400px;
+    height: 400px;
+}
+
+#output-img {
+    width: 400px;
+    height: 400px;
+}
+
+.row {
+    display: flex;
+}
+
+
+/* Clear floats after image containers */
+
+.row::after {
+    content: "";
+    clear: both;
+    display: table;
+}
+
+.column {
+    float: left;
+    width: 49%;
+    padding: 5px;
+}
+
+.image-caption {
+    text-align: center;
+    margin-top: 0px;
+}
