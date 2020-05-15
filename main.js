@@ -103,4 +103,8 @@ function postImage() {
     // add image to output canvas
 }
 
-function drawFilledImage(data, textStatus, jjqXHR) {}
+function drawFilledImage(data, textStatus, jjqXHR) {
+    // TODO
+    console.log("Not implemented");
+    scaleToFill(original_image);
+}
