@@ -1,8 +1,8 @@
 var canvas;
 var context;
 var c_saved;
-var original_image;
-var jcrop_api;
+var original_image = new Image();
+original_image.src = "/demo.jpg";var jcrop_api;
 var crop_limit = 75;
 
 var server_url = "localhost";
@@ -13,7 +13,6 @@ $(window).on("load", function() {
     make_base();
 
     $("#file-input").on("change", file_input);
-    $("#modification-area").hide();
     $("#btn-load-image").prop("disabled", true);
     $("#image").Jcrop({
             onChange: updatePreview,
@@ -28,6 +27,7 @@ $(window).on("load", function() {
             jcrop_api = this;
         }
     );
+    scaleToFill(original_image);
 });
 
 function file_input(event) {
@@ -37,7 +37,6 @@ function file_input(event) {
     status.textContent = "";
     const file = event.target.files[0];
     if (file == null) {
-        $("#modification-area").hide();
         return;
     }
     if (!file.type) {

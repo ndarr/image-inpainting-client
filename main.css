@@ -1,3 +1,13 @@
+body {
+    margin: 0;
+    max-width: none;
+}
+
+.span12{
+    margin:auto;
+}
+
+
 #image {
     width: 400px;
     height: 400px;
@@ -6,6 +16,7 @@
 #output-img {
     width: 400px;
     height: 400px;
+    margin-bottom: 0;
 }
 
 .row {
