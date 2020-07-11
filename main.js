@@ -5,7 +5,7 @@ var original_image = new Image();
 original_image.src = "/demo.jpg"; var jcrop_api;
 var crop_limit = 75;
 
-var server_url = "localhost";
+var server_url = "http://localhost:5000";
 
 
 var mask = createEmptyMask()
@@ -137,12 +137,22 @@ function postImage() {
 
 
     let body = {
-        damaged_image: damagedImage,
+        damagedImage: damagedImage,
         mask: mask
     }
+    console.log(JSON.stringify(body))
     console.log(body)
     // Send image to server
-    jQuery.post(server_url, body, drawFilledImage);
+    $.ajax({
+        type: "POST",
+        url: server_url,
+        data: JSON.stringify(body),
+        dataType: "json",
+        contentType: "application/json",
+        success: drawFilledImage
+    })
+
+    //jQuery.post(server_url, JSON.stringify(body), drawFilledImage, "json");
     // Wait for response
 
     // add image to output canvas
@@ -161,8 +171,43 @@ function getPixelValues(image) {
 
 function drawFilledImage(data, textStatus, jjqXHR) {
     // TODO
-    console.log("Not implemented");
-    scaleToFill(original_image);
+    console.log(data)
+
+    alert("Doing")
+    var width = 256,
+    height = 256,
+    buffer = new Uint8ClampedArray(width * height * 4);
+
+
+    for(var y = 0; y < height; y++) {
+        for(var x = 0; x < width; x++) {
+            var pos = (y * width + x) * 4; // position in buffer based on x and y
+            buffer[pos] = data[x][y][0];           // some R value [0, 255]
+            buffer[pos+1] = data[x][y][1];           // some G value
+            buffer[pos+2] = data[x][y][2];          // some B value
+            buffer[pos+3] = 255;           // set alpha channel
+        }
+    }
+
+        // create off-screen canvas element
+    var output_canvas = document.getElementById('output-img'),
+    ctx = output_canvas.getContext('2d');
+
+    output_canvas.width = width;
+    output_canvas.height = height;
+
+    // create imageData object
+    var idata = ctx.createImageData(width, height);
+
+    // set our buffer as source
+    idata.data.set(buffer);
+
+    // update canvas with new data
+    ctx.putImageData(idata, 0, 0);
+    alert("Finished")
+
+    //console.log("Not implemented");
+    //scaleToFill(original_image);
 }
 
 // new position from mouse event
@@ -193,7 +238,11 @@ function draw(e) {
     for (var x = pos.x-bounds; x < pos.x + 2*bounds; x++){
         for (var y = pos.y-bounds; y < pos.y + 2*bounds; y++){
             if (context.isPointInStroke(x, y)){
-                mask[Math.floor(x)][Math.floor(y)] = 1.
+                x_idx = Math.floor(x)
+                y_idx = Math.floor(y)
+                if (x_idx < 256 && y_idx < 256){
+                    mask[x_idx][Math.floor(y)] = 1.
+                }
             }
         }
     }
