@@ -9,13 +9,13 @@ body {
 
 
 #image {
-    width: 400px;
-    height: 400px;
+    width: 256px;
+    height: 256px;
 }
 
 #output-img {
-    width: 400px;
-    height: 400px;
+    width: 256px;
+    height: 256px;
     margin-bottom: 0;
 }
 

@@ -34,7 +34,7 @@
                     <div id="modification-area">
                         <div class="row">
                             <div class="column">
-                                <canvas style="background-color: white;" id="image" height="400" width="400"></canvas>
+                                <canvas style="background-color: white;" id="image" height="256" width="256"></canvas>
                                 <p class="image-caption">Input Image</p>
                             </div>
                             <div class="column">
@@ -42,8 +42,8 @@
                                 <p class="image-caption">Output Image</p>
                             </div>
                         </div>
-                        <button onclick="drawRectangle()">Remove Content</button>
-                        <button onclick="postImage()">Fill Rectangle</button>
+                        <button onclick="loadImage()">Reset</button>
+                        <button onclick="postImage()">Inpaint</button>
                     </div>
                 </div>
             </div>
