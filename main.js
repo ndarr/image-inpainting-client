@@ -5,7 +5,7 @@ var original_image = new Image();
 original_image.src = "demo.jpg"; var jcrop_api;
 var crop_limit = 75;
 
-var server_url = "http://localhost:5000";
+var server_url = "http://darr.cloud:6969";
 
 
 var mask = createEmptyMask()
