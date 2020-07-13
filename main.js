@@ -2,7 +2,7 @@ var canvas;
 var context;
 var c_saved;
 var original_image = new Image();
-original_image.src = "/demo.jpg"; var jcrop_api;
+original_image.src = "demo.jpg"; var jcrop_api;
 var crop_limit = 75;
 
 var server_url = "http://localhost:5000";
