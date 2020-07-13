@@ -10,15 +10,6 @@ var server_url = "http://localhost:5000";
 
 var mask = createEmptyMask()
 
-
-// some hotfixes... ( ≖_≖)
-// document.body.style.margin = 0;
-// canvas.style.position = 'fixed';
-
-
-
-
-// last known position
 var pos = { x: 0, y: 0 };
 
 var context;
@@ -95,6 +86,11 @@ function loadImage() {
     scaleToFill(original_image);
     $("#modification-area").show();
     mask = createEmptyMask();
+    // create off-screen canvas element
+    var output_canvas = document.getElementById('output-img'),
+        ctx = output_canvas.getContext('2d');
+        
+        ctx.clearRect(0, 0, 256, 256);
 }
 
 function scaleToFill(img) {
@@ -138,31 +134,6 @@ function postImage() {
     imageHeight = 256
     imageWidth = 256
     data = damagedImageData
-    console.log(data)
-    // iterate over all pixels based on x and y coordinates
-    // for (var y = 0; y < imageHeight; y++) {
-    //     // loop through each column
-    //     for (var x = 0; x < imageWidth; x++) {
-    //         var red = data[((imageWidth * y) + x) * 4];
-    //         var green = data[((imageWidth * y) + x) * 4 + 1];
-    //         var blue = data[((imageWidth * y) + x) * 4 + 2];
-    //         var alpha = data[((imageWidth * y) + x) * 4 + 3];
-    //         emptyImage[y][x][0] = red;
-    //         emptyImage[y][x][1] = blue;
-    //         emptyImage[y][x][2] = green;
-        
-    //     }
-    // }
-    // for (var x = 0; x < 256; x++) {
-    //     for (var y = 0; y < 256; y++) {
-    //         for (var c = 0; c < 3; c++) {
-    //             pixel_val = damagedImageData.shift()
-    //             if (c < 3) {
-    //                 emptyImage[x][y][c] = pixel_val
-    //             }
-    //         }
-    //     }
-    // }
     damagedImage = emptyImage
 
 
@@ -182,10 +153,11 @@ function postImage() {
         success: drawFilledImage
     })
 
-    //jQuery.post(server_url, JSON.stringify(body), drawFilledImage, "json");
-    // Wait for response
+    // create off-screen canvas element
+    var output_canvas = document.getElementById('output-img'),
+        ctx = output_canvas.getContext('2d');
+        ctx.clearRect(0, 0, 256, 256);
 
-    // add image to output canvas
 }
 
 function getPixelValues(image) {
@@ -208,17 +180,6 @@ function drawFilledImage(data, textStatus, jjqXHR) {
        height = 256;
 
     buffer= Uint8ClampedArray.from(data)
-    // for (var y = 0; y < height; y++) {
-    //     for (var x = 0; x < width; x++) {
-    //         var pos = (y * width + x) * 4; // position in buffer based on x and y
-    //         buffer[pos] = data[y][x][0];           // some R value [0, 255]
-    //         buffer[pos + 1] = data[y][x][1];           // some G value
-    //         buffer[pos + 2] = data[y][x][2];          // some B value
-    //         buffer[pos + 3] = 255;           // set alpha channel
-    //     }
-    // }
-
-    // create off-screen canvas element
     var output_canvas = document.getElementById('output-img'),
         ctx = output_canvas.getContext('2d');
 
@@ -234,10 +195,7 @@ function drawFilledImage(data, textStatus, jjqXHR) {
 
     // update canvas with new data
     ctx.putImageData(idata, 0, 0, 0, 0, 256, 256);
-    //alert("Finished")
 
-    //console.log("Not implemented");
-    //scaleToFill(original_image);
 }
 
 // new position from mouse event
