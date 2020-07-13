@@ -104,6 +104,17 @@ function scaleToFill(img) {
     var x = (canvas.width / 2) - (img.width / 2) * scale;
     var y = (canvas.height / 2) - (img.height / 2) * scale;
     context.drawImage(img, x, y, img.width * scale, img.height * scale);
+    imgData = context.getImageData(0, 0, 256, 256)
+    d = imgData.data
+    for (var i = 0; i < d.length; i++){
+        if (d[i] == 0){
+            d[i] = 1
+        }
+    }
+    imgData.data.set(d)
+    context.putImageData(imgData, 0, 0)
+
+
 }
 
 function updatePreview(c) {
@@ -243,6 +254,8 @@ function draw(e) {
 
     if (e.buttons !== 1) return;
 
+    origImgData = context.getImageData(0, 0, 256, 256)
+
     context.beginPath(); // begin
 
     context.lineWidth = line_width;
@@ -253,16 +266,32 @@ function draw(e) {
     setPosition(e);
     context.lineTo(pos.x, pos.y); // to 
     context.stroke(); // draw it!
-    bounds = line_width
-    for (var x = pos.x - bounds; x < pos.x + 4 * bounds; x++) {
-        for (var y = pos.y - bounds; y < pos.y + 4 * bounds; y++) {
-            if (context.isPointInStroke(x, y)) {
-                x_idx = Math.floor(x)
-                y_idx = Math.floor(y)
-                if (x_idx < 256 && y_idx < 256) {
-                    mask[y_idx][x_idx] = 1.
-                }
-            }
+
+    afterImgData = context.getImageData(0, 0, 256, 256)
+
+    d = afterImgData.data
+
+    for (var i = 0; i < d.length; i++){
+        if (d[i] != 0){
+            d[i] = origImgData.data[i]
         }
     }
+    afterImgData.data.set(d)
+    context.putImageData(afterImgData, 0, 0)
+
+    // bounds = line_width
+
+
+
+    // for (var x = pos.x - bounds; x < pos.x + 4 * bounds; x++) {
+    //     for (var y = pos.y - bounds; y < pos.y + 4 * bounds; y++) {
+    //         if (context.isPointInStroke(x, y)) {
+    //             x_idx = Math.floor(x)
+    //             y_idx = Math.floor(y)
+    //             if (x_idx < 256 && y_idx < 256) {
+    //                 mask[y_idx][x_idx] = 1.
+    //             }
+    //         }
+    //     }
+    // }
 }
