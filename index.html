@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-    <title>ImageInpainting</title>
+    <title>Image Inpainting</title>
     <meta http-equiv="Content-type" content="text/html;charset=UTF-8" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/gh/tapmodo/Jcrop@0.9.12/js/jquery.Jcrop.min.js"></script>
@@ -27,23 +27,27 @@
             <div class="span12">
                 <div class="jc-demo-box">
                     <div class="page-header">
-                        <h1>Image Inpainting</h1>
+                        <p><center><h1>Image Inpainting</h1></center></p>
                     </div>
-                    <input id="file-input" type="file" accept=".jpg, .jpeg" />
-                    <button onclick="loadImage()" id="btn-load-image">Load Image</button>
+                    <center>
+                        <input id="file-input" type="file" accept=".jpg, .jpeg" />
+                        <button onclick="loadImage()" id="btn-load-image">Load Image</button>
+                    </center>
                     <div id="modification-area">
                         <div class="row">
                             <div class="column">
-                                <canvas style="background-color: white;" id="image" height="256" width="256"></canvas>
+                                <canvas style="background-color: ghostwhite;" id="image" height="256" width="256"></canvas>
                                 <p class="image-caption">Input Image</p>
                             </div>
                             <div class="column">
-                                <canvas height="256" width="256" id="output-img"> </canvas>
+                                <canvas style="background-color: ghostwhite;" height="256" width="256" id="output-img"> </canvas>
                                 <p class="image-caption">Output Image</p>
                             </div>
                         </div>
-                        <button onclick="loadImage()">Reset</button>
-                        <button onclick="postImage()">Inpaint</button>
+                        <center>
+                            <button onclick="loadImage()">Reset</button>
+                            <button onclick="postImage()">Inpaint</button>
+                        </center>
                     </div>
                 </div>
             </div>
