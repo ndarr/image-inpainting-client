@@ -74,20 +74,20 @@ function make_base() {
     context.fillRect(0, 0, canvas.w, canvas.h);
 }
 
-function createEmptyMask(){
+function createEmptyMask() {
     let n = 256;
-    let a = new Array(n); for (let i=0; i<n; ++i) a[i] = 0;
-    let b = new Array(n); for (let i=0; i<n; ++i) b[i] = a.slice();
+    let a = new Array(n); for (let i = 0; i < n; ++i) a[i] = 0;
+    let b = new Array(n); for (let i = 0; i < n; ++i) b[i] = a.slice();
     return b;
 }
 
 
 function createEmptyImage() {
     let n = 256;
-    let c = new Array(3); for (let i=0; i<3; ++i) c[i] = 0;
-    let a = new Array(n); for (let i=0; i<n; ++i) a[i] = c.slice();
-    let b = new Array(n); for (let i=0; i<n; ++i) b[i] = a.slice();
-    
+    let c = new Array(3); for (let i = 0; i < 3; ++i) c[i] = 0;
+    let a = new Array(n); for (let i = 0; i < n; ++i) a[i] = c.slice();
+    let b = new Array(n); for (let i = 0; i < n; ++i) b[i] = a.slice();
+
     return b;
 }
 
@@ -123,21 +123,40 @@ function postImage() {
 
 
     let emptyImage = createEmptyImage()
-    for (var x = 0; x < 256; x++){
-        for (var y = 0; y < 256 ; y++){
-            for (var c = 0; c < 3; c++){
-                pixel_val = damagedImageData.shift()
-                if (c < 3){
-                    emptyImage[x][y][c] = pixel_val
-                }
-            }
-        }
-    }
+
+    imageHeight = 256
+    imageWidth = 256
+    data = damagedImageData
+    console.log(data)
+    // iterate over all pixels based on x and y coordinates
+    // for (var y = 0; y < imageHeight; y++) {
+    //     // loop through each column
+    //     for (var x = 0; x < imageWidth; x++) {
+    //         var red = data[((imageWidth * y) + x) * 4];
+    //         var green = data[((imageWidth * y) + x) * 4 + 1];
+    //         var blue = data[((imageWidth * y) + x) * 4 + 2];
+    //         var alpha = data[((imageWidth * y) + x) * 4 + 3];
+    //         emptyImage[y][x][0] = red;
+    //         emptyImage[y][x][1] = blue;
+    //         emptyImage[y][x][2] = green;
+        
+    //     }
+    // }
+    // for (var x = 0; x < 256; x++) {
+    //     for (var y = 0; y < 256; y++) {
+    //         for (var c = 0; c < 3; c++) {
+    //             pixel_val = damagedImageData.shift()
+    //             if (c < 3) {
+    //                 emptyImage[x][y][c] = pixel_val
+    //             }
+    //         }
+    //     }
+    // }
     damagedImage = emptyImage
 
 
     let body = {
-        damagedImage: damagedImage,
+        damagedImage: data,
         mask: mask
     }
     console.log(JSON.stringify(body))
@@ -166,32 +185,31 @@ function getPixelValues(image) {
     var ctx = cnv.getContext('2d');
     ctx.drawImage(img, 0, 0, 256, 256);
     return ctx.getImageData(0, 0, 256, 256);
-  }
+}
 
 
 function drawFilledImage(data, textStatus, jjqXHR) {
     // TODO
     console.log(data)
 
-    alert("Doing")
+    //alert("Doing")
     var width = 256,
-    height = 256,
-    buffer = new Uint8ClampedArray(width * height * 4);
+       height = 256;
 
+    buffer= Uint8ClampedArray.from(data)
+    // for (var y = 0; y < height; y++) {
+    //     for (var x = 0; x < width; x++) {
+    //         var pos = (y * width + x) * 4; // position in buffer based on x and y
+    //         buffer[pos] = data[y][x][0];           // some R value [0, 255]
+    //         buffer[pos + 1] = data[y][x][1];           // some G value
+    //         buffer[pos + 2] = data[y][x][2];          // some B value
+    //         buffer[pos + 3] = 255;           // set alpha channel
+    //     }
+    // }
 
-    for(var y = 0; y < height; y++) {
-        for(var x = 0; x < width; x++) {
-            var pos = (y * width + x) * 4; // position in buffer based on x and y
-            buffer[pos] = data[x][y][0];           // some R value [0, 255]
-            buffer[pos+1] = data[x][y][1];           // some G value
-            buffer[pos+2] = data[x][y][2];          // some B value
-            buffer[pos+3] = 255;           // set alpha channel
-        }
-    }
-
-        // create off-screen canvas element
+    // create off-screen canvas element
     var output_canvas = document.getElementById('output-img'),
-    ctx = output_canvas.getContext('2d');
+        ctx = output_canvas.getContext('2d');
 
     output_canvas.width = width;
     output_canvas.height = height;
@@ -201,10 +219,11 @@ function drawFilledImage(data, textStatus, jjqXHR) {
 
     // set our buffer as source
     idata.data.set(buffer);
+    console.log(buffer)
 
     // update canvas with new data
-    ctx.putImageData(idata, 0, 0);
-    alert("Finished")
+    ctx.putImageData(idata, 0, 0, 0, 0, 256, 256);
+    //alert("Finished")
 
     //console.log("Not implemented");
     //scaleToFill(original_image);
@@ -235,13 +254,13 @@ function draw(e) {
     context.lineTo(pos.x, pos.y); // to 
     context.stroke(); // draw it!
     bounds = line_width
-    for (var x = pos.x-bounds; x < pos.x + 2*bounds; x++){
-        for (var y = pos.y-bounds; y < pos.y + 2*bounds; y++){
-            if (context.isPointInStroke(x, y)){
+    for (var x = pos.x - bounds; x < pos.x + 4 * bounds; x++) {
+        for (var y = pos.y - bounds; y < pos.y + 4 * bounds; y++) {
+            if (context.isPointInStroke(x, y)) {
                 x_idx = Math.floor(x)
                 y_idx = Math.floor(y)
-                if (x_idx < 256 && y_idx < 256){
-                    mask[x_idx][Math.floor(y)] = 1.
+                if (x_idx < 256 && y_idx < 256) {
+                    mask[y_idx][x_idx] = 1.
                 }
             }
         }
