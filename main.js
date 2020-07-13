@@ -237,19 +237,4 @@ function draw(e) {
     afterImgData.data.set(d)
     context.putImageData(afterImgData, 0, 0)
 
-    // bounds = line_width
-
-
-
-    // for (var x = pos.x - bounds; x < pos.x + 4 * bounds; x++) {
-    //     for (var y = pos.y - bounds; y < pos.y + 4 * bounds; y++) {
-    //         if (context.isPointInStroke(x, y)) {
-    //             x_idx = Math.floor(x)
-    //             y_idx = Math.floor(y)
-    //             if (x_idx < 256 && y_idx < 256) {
-    //                 mask[y_idx][x_idx] = 1.
-    //             }
-    //         }
-    //     }
-    // }
 }
