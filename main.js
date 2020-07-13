@@ -7,6 +7,7 @@ var crop_limit = 75;
 
 var server_url = "https://darr.cloud:6969";
 
+var loader;
 
 var mask = createEmptyMask()
 
@@ -27,6 +28,7 @@ $(window).on("load", function () {
     c_saved = canvas;
 
     make_base();
+    loader = document.getElementById('loader');
 
     $("#file-input").on("change", file_input);
     $("#btn-load-image").prop("disabled", true);
@@ -144,13 +146,20 @@ function postImage() {
     console.log(JSON.stringify(body))
     console.log(body)
     // Send image to server
+    
+
+    loader.style.display="inherit"
     $.ajax({
         type: "POST",
         url: server_url,
         data: JSON.stringify(body),
         dataType: "json",
         contentType: "application/json",
-        success: drawFilledImage
+        success: drawFilledImage,
+        error: function (jqXHR, exception) {
+            alert("Something went wrong!");
+            loader.style.display = "none";
+        },
     })
 
     // create off-screen canvas element
@@ -172,10 +181,6 @@ function getPixelValues(image) {
 
 
 function drawFilledImage(data, textStatus, jjqXHR) {
-    // TODO
-    console.log(data)
-
-    //alert("Doing")
     var width = 256,
        height = 256;
 
@@ -191,8 +196,8 @@ function drawFilledImage(data, textStatus, jjqXHR) {
 
     // set our buffer as source
     idata.data.set(buffer);
-    console.log(buffer)
 
+    loader.style.display="none";
     // update canvas with new data
     ctx.putImageData(idata, 0, 0, 0, 0, 256, 256);
 
