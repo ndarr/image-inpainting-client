@@ -9,6 +9,8 @@ var server_url = "https://darr.cloud:6969";
 
 var loader;
 
+var mouseDown = false;
+
 var mask = createEmptyMask()
 
 var pos = { x: 0, y: 0 };
@@ -17,9 +19,21 @@ var context;
 var canvas;
 
 // window.addEventListener('resize', resize);
-document.addEventListener('mousemove', draw);
-document.addEventListener('mousedown', setPosition);
-document.addEventListener('mouseenter', setPosition);
+document.addEventListener('mousemove', draw), {passive: false};
+document.addEventListener('mousedown', setPosition, {passive: false});
+document.addEventListener('mouseenter', setPosition), {passive: false};
+
+document.addEventListener("mousedown", (e)=>{
+    mouseDown = true;
+});
+
+document.addEventListener("mouseup", (e)=>{
+    mouseDown = false;
+});
+
+document.addEventListener('touchmove', draw, {passive: false});
+document.addEventListener('touchstart', setPosition, {passive: false});
+document.addEventListener('touchenter', setPosition, {passive: false});
 
 $(window).on("load", function () {
     canvas = document.getElementById("image");
@@ -205,20 +219,39 @@ function drawFilledImage(data, textStatus, jjqXHR) {
 
 // new position from mouse event
 function setPosition(e) {
+    if (e.target.nodeName == 'CANVAS') { e.preventDefault(); }
+    console.log("Position")
     var rect = canvas.getBoundingClientRect();
-    pos.x = e.clientX - rect.left;
-    pos.y = e.clientY - rect.top;
+    console.log(e.type);
+    var x, y;
+    if (e.type=="touchmove"){
+        var touch = e.touches[0];
+        x = touch.pageX;
+        y = touch.pageY;
+    }
+    else{
+        x = e.clientX;
+        y = e.clientY;
+    }
+    pos.x = x - rect.left;
+    pos.y = y - rect.top;
 }
 
 
 function draw(e) {
+    if (e.target.nodeName == 'CANVAS') { e.preventDefault(); }
     // mouse left button must be pressed
     let line_width = 10;
+    if (e.type != "touchmove" && !mouseDown){
+        return;
+    }
+    
 
-    if (e.buttons !== 1) return;
+
+    //if (e.buttons !== 1) return;
 
     origImgData = context.getImageData(0, 0, 256, 256)
-
+    console.log(pos.x, " - ",pos.y)
     context.beginPath(); // begin
 
     context.lineWidth = line_width;
