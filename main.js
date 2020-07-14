@@ -226,8 +226,8 @@ function setPosition(e) {
     var x, y;
     if (e.type=="touchmove"){
         var touch = e.touches[0];
-        x = touch.pageX;
-        y = touch.pageY;
+        x = touch.clientX;
+        y = touch.clientY;
     }
     else{
         x = e.clientX;
