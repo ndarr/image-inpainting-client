@@ -5,7 +5,7 @@ var original_image = new Image();
 original_image.src = "demo.jpg"; var jcrop_api;
 var crop_limit = 75;
 
-var server_url = "https://darr.cloud:6969";
+var server_url = "https://showcase.darr.cloud/image-inpainting/api";
 
 var loader;
 
