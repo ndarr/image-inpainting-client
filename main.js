@@ -141,7 +141,6 @@ function updatePreview(c) {
 function postImage() {
     //Get image from canvas
 
-    //var imageData = canvas.toDataURL("image/jpg", 1.0);
     var damagedImageData = Array.prototype.slice.call(context.getImageData(0, 0, 256, 256).data);
 
 
